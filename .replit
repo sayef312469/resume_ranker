@@ -1,0 +1,14 @@
+# Replit configuration for ResumeIQ
+
+entrypoint = "backend/main.py"
+
+[env]
+PYTHONUNBUFFERED = "1"
+
+[nix]
+channel = "stable-23_11"
+
+# Configuration:
+# - Backend runs on port 8000 using uvicorn
+# - Frontend served as static files from /frontend directory
+# - config.js auto-configures API endpoint (localhost for dev, replit domain for prod)

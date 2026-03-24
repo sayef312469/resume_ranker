@@ -1,0 +1,6 @@
+Model,Accuracy,Macro_F1,Weighted_F1
+Logistic Regression,65.39%,58.53%,62.50%
+Random Forest,63.01%,56.24%,60.00%
+SVM,66.11%,60.82%,64.83%
+Naive Bayes,62.53%,58.74%,61.69%
+Voting Ensemble,62.77%,58.92%,61.90%
