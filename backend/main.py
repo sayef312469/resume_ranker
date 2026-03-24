@@ -5,7 +5,7 @@
 
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List, Optional
@@ -58,14 +58,6 @@ app.add_middleware(
     allow_methods     = ["*"],
     allow_headers     = ["*"]
 )
-
-# Serve frontend static files
-frontend_dir = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "frontend"
-)
-if os.path.exists(frontend_dir):
-    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
 
 
 # ============================================================
@@ -302,6 +294,45 @@ def get_jds_for_category(category: str):
         "jds"     : cat_to_jds[category],
         "count"   : len(cat_to_jds[category])
     }
+
+
+# ============================================================
+# CATCH-ALL: Serve frontend for any unmatched route (SPA)
+# ============================================================
+
+@app.get("/{full_path:path}")
+async def serve_frontend(full_path: str):
+    """Serve index.html for client-side routing, or static files"""
+    frontend_dir = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "frontend"
+    )
+    
+    # Check if it's a static file that exists
+    file_path = os.path.join(frontend_dir, full_path)
+    if os.path.isfile(file_path):
+        return FileResponse(file_path)
+    
+    # Otherwise, serve index.html for React Router
+    index_file = os.path.join(frontend_dir, "index.html")
+    if os.path.exists(index_file):
+        with open(index_file, 'r') as f:
+            return HTMLResponse(f.read())
+    
+    return JSONResponse(status_code=404, content={"error": "Not found"})
+
+
+# ============================================================
+# SERVE FRONTEND STATIC FILES (MUST BE LAST)
+# ============================================================
+
+# Mount static files AFTER all API routes so routes take priority
+frontend_dir = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "frontend"
+)
+if os.path.exists(frontend_dir):
+    app.mount("/", StaticFiles(directory=frontend_dir), name="frontend")
 
 
 # ============================================================

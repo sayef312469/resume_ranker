@@ -24,11 +24,13 @@ if os.path.exists(frontend_dir):
     app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="static")
 
 if __name__ == "__main__":
+    # Change to backend directory
+    os.chdir("backend")
+    
     # Run on 0.0.0.0:8000 so Replit can access it
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
         port=8000,
-        reload=False,
-        cwd="backend"
+        reload=False
     )
