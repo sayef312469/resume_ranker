@@ -64,7 +64,7 @@ app.add_middleware(
 # ENDPOINT 1 — HEALTH CHECK
 # ============================================================
 
-@app.get("/")
+@app.get("/health")
 def health_check():
     return {
         "status"    : "running",
@@ -76,6 +76,24 @@ def health_check():
         },
         "categories": list(le.classes_)
     }
+
+
+# ============================================================
+# ENDPOINT 2 — ROOT: Serve Frontend
+# ============================================================
+
+@app.get("/")
+async def serve_root():
+    """Serve the main frontend page"""
+    frontend_dir = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "frontend"
+    )
+    index_file = os.path.join(frontend_dir, "index.html")
+    if os.path.exists(index_file):
+        with open(index_file, 'r') as f:
+            return HTMLResponse(f.read())
+    return JSONResponse(status_code=404, content={"error": "Frontend not found"})
 
 
 # ============================================================

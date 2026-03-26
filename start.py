@@ -15,13 +15,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-# Import the existing FastAPI app from main.py
-from main import app
-
-# Serve frontend static files
-frontend_dir = os.path.join(os.path.dirname(__file__), 'frontend')
-if os.path.exists(frontend_dir):
-    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="static")
+# Frontend is already handled in main.py
 
 if __name__ == "__main__":
     # Change to backend directory
