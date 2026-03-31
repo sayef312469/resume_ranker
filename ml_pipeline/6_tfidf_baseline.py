@@ -33,7 +33,7 @@ print(f" JDs loaded     : {len(jd_df)}")
 # This gives a shared vocabulary space
 # ============================================================
 
-print("\n⏳ Building TF-IDF matrix...")
+print("\n Building TF-IDF matrix...")
 
 # Combine resumes and JDs for fitting
 all_text = (
@@ -91,7 +91,7 @@ def rank_resumes_tfidf(jd_index, resume_tfidf, jd_tfidf,
 # 6D. RUN RANKING FOR ALL 137 JDs
 # ============================================================
 
-print("\n⏳ Ranking resumes with TF-IDF for all 137 JDs...")
+print("\n Ranking resumes with TF-IDF for all 137 JDs...")
 
 all_tfidf_results  = {}
 tfidf_accuracies   = []

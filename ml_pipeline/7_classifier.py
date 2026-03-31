@@ -33,9 +33,9 @@ sbert_resume_emb = np.load("embeddings/sbert_resume_embeddings.npy")
 print("="*55)
 print("STEP 7: RESUME CLASSIFIER")
 print("="*55)
-print(f"✅ Resumes loaded       : {len(resume_df)}")
-print(f"✅ SBERT embeddings     : {sbert_resume_emb.shape}")
-print(f"✅ Categories           : {resume_df['Category'].nunique()}")
+print(f" Resumes loaded       : {len(resume_df)}")
+print(f" SBERT embeddings     : {sbert_resume_emb.shape}")
+print(f" Categories           : {resume_df['Category'].nunique()}")
 print(f"\nCategory distribution:")
 print(resume_df['Category'].value_counts().to_string())
 
@@ -51,9 +51,9 @@ le = LabelEncoder()
 y  = le.fit_transform(resume_df['Category'].values)
 X  = sbert_resume_emb
 
-print(f"\n✅ Features shape : {X.shape}")
-print(f"✅ Labels shape   : {y.shape}")
-print(f"✅ Classes        : {list(le.classes_)}")
+print(f"\n Features shape : {X.shape}")
+print(f" Labels shape   : {y.shape}")
+print(f" Classes        : {list(le.classes_)}")
 
 
 # ============================================================
@@ -68,7 +68,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     stratify     = y      # keeps category proportions equal
 )
 
-print(f"\n✅ Train/Test Split (80/20 stratified):")
+print(f"\n Train/Test Split (80/20 stratified):")
 print(f"   Training samples : {len(X_train)}")
 print(f"   Testing samples  : {len(X_test)}")
 
@@ -135,7 +135,7 @@ for name, clf in classifiers.items():
         'report'    : report
     }
 
-    print(f"✅ {name} done")
+    print(f" {name} done")
     print(f"   Test Accuracy : {acc*100:.2f}%")
     print(f"   Macro F1      : "
           f"{report['macro avg']['f1-score']*100:.2f}%")
@@ -174,7 +174,7 @@ voting_clf = VotingClassifier(
     voting='soft'   # uses predicted probabilities
 )
 
-print("⏳ Training Voting Classifier (soft voting)...")
+print(" Training Voting Classifier (soft voting)...")
 print("   (this trains all 4 models again internally)")
 
 voting_clf.fit(X_train, y_train)
@@ -187,7 +187,7 @@ voting_report = classification_report(
     output_dict=True
 )
 
-print(f"✅ Voting Classifier done")
+print(f" Voting Classifier done")
 print(f"   Test Accuracy : {voting_acc*100:.2f}%")
 print(f"   Macro F1      : "
       f"{voting_report['macro avg']['f1-score']*100:.2f}%")
@@ -207,7 +207,7 @@ if voting_acc > best_accuracy:
     best_accuracy = voting_acc
     best_model    = voting_clf
     best_name     = "Voting Ensemble"
-    print(f"\n🏆 Voting Ensemble is the new best model!")
+    print(f"\n Voting Ensemble is the new best model!")
 else:
     print(f"\n   Previous best ({best_name}: "
           f"{best_accuracy*100:.2f}%) still leads")
@@ -233,7 +233,7 @@ for name, res in results.items():
           f"{wf1*100:>11.2f}%{flag}")
 
 print("-"*57)
-print(f"\n🏆 Best classifier : {best_name} "
+print(f"\n Best classifier : {best_name} "
       f"({best_accuracy*100:.2f}%)")
 
 
@@ -255,7 +255,7 @@ print(classification_report(
 # 7H. CONFUSION MATRIX — Best Model
 # ============================================================
 
-print("⏳ Generating confusion matrix...")
+print(" Generating confusion matrix...")
 
 cm  = confusion_matrix(y_test, results[best_name]['y_pred'])
 fig, ax = plt.subplots(figsize=(14, 12))
@@ -277,14 +277,14 @@ plt.tight_layout()
 plt.savefig("results/confusion_matrix.png",
             dpi=150, bbox_inches='tight')
 plt.show()
-print("✅ Confusion matrix saved → results/confusion_matrix.png")
+print(" Confusion matrix saved → results/confusion_matrix.png")
 
 
 # ============================================================
 # 7I. UPDATED ACCURACY BAR CHART — All 5 Models
 # ============================================================
 
-print("⏳ Generating classifier comparison chart...")
+print(" Generating classifier comparison chart...")
 
 names  = list(results.keys())
 accs   = [results[n]['accuracy'] * 100 for n in names]
@@ -321,7 +321,7 @@ plt.tight_layout()
 plt.savefig("results/classifier_comparison.png",
             dpi=150, bbox_inches='tight')
 plt.show()
-print("✅ Chart saved → results/classifier_comparison.png")
+print(" Chart saved → results/classifier_comparison.png")
 
 
 # ============================================================
@@ -346,7 +346,7 @@ summary_df = pd.DataFrame([{
 
 summary_df.to_csv("results/classifier_summary.csv", index=False)
 
-print("\n✅ Results saved:")
+print("\n Results saved:")
 print("   → results/classifier_report.csv")
 print("   → results/classifier_summary.csv")
 print("   → results/confusion_matrix.png")
@@ -360,12 +360,12 @@ print("   → results/classifier_comparison.png")
 print("\n" + "="*55)
 print("CLASSIFIER SUMMARY")
 print("="*55)
-print(f"✅ Features used      : SBERT embeddings (384 dim)")
-print(f"✅ Training samples   : {len(X_train)}")
-print(f"✅ Testing samples    : {len(X_test)}")
-print(f"✅ Categories         : {len(le.classes_)}")
-print(f"✅ Models trained     : {len(classifiers)}")
-print(f"✅ Best model         : {best_name}")
-print(f"✅ Best accuracy      : {best_accuracy*100:.2f}%")
+print(f" Features used      : SBERT embeddings (384 dim)")
+print(f" Training samples   : {len(X_train)}")
+print(f" Testing samples    : {len(X_test)}")
+print(f" Categories         : {len(le.classes_)}")
+print(f" Models trained     : {len(classifiers)}")
+print(f" Best model         : {best_name}")
+print(f" Best accuracy      : {best_accuracy*100:.2f}%")
 print("="*55)
-print("\n🎉 Step 7 Complete — Ready for Step 8: Metrics!")
+print("\n Step 7 Complete — Ready for Step 8: Metrics!")
