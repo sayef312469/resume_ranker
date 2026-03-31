@@ -23,8 +23,8 @@ jd_df     = pd.read_csv("data/cleaned_jds.csv")
 print("="*55)
 print("STEP 6: TF-IDF BASELINE")
 print("="*55)
-print(f"✅ Resumes loaded : {len(resume_df)}")
-print(f"✅ JDs loaded     : {len(jd_df)}")
+print(f" Resumes loaded : {len(resume_df)}")
+print(f" JDs loaded     : {len(jd_df)}")
 
 
 # ============================================================
@@ -60,7 +60,7 @@ jd_tfidf = tfidf_vectorizer.transform(
     jd_df['Cleaned_JD'].tolist()
 )
 
-print(f"✅ TF-IDF matrix built")
+print(f" TF-IDF matrix built")
 print(f"   Resume matrix shape : {resume_tfidf.shape}")
 print(f"   JD matrix shape     : {jd_tfidf.shape}")
 print(f"   Vocabulary size     : {len(tfidf_vectorizer.vocabulary_)}")
@@ -123,7 +123,7 @@ for i, row in jd_df.iterrows():
         'Accuracy'  : accuracy
     })
 
-print("✅ TF-IDF ranking complete")
+print(" TF-IDF ranking complete")
 
 
 # ============================================================
@@ -180,14 +180,14 @@ overall_sbert = sbert_cat_acc.mean()
 print("\n" + "="*55)
 print("OVERALL RESULTS")
 print("="*55)
-print(f"✅ TF-IDF avg accuracy : {overall_tfidf:.1f}%")
-print(f"✅ BERT  avg accuracy  : {overall_bert:.1f}%")
-print(f"✅ SBERT avg accuracy  : {overall_sbert:.1f}%")
+print(f" TF-IDF avg accuracy : {overall_tfidf:.1f}%")
+print(f" BERT  avg accuracy  : {overall_bert:.1f}%")
+print(f" SBERT avg accuracy  : {overall_sbert:.1f}%")
 print(f"\n📊 Improvement over TF-IDF:")
 print(f"   BERT  : +{overall_bert  - overall_tfidf:.1f}%")
 print(f"   SBERT : +{overall_sbert - overall_tfidf:.1f}%")
-print(f"\n✅ Best model : SBERT" if overall_sbert > overall_bert
-      else f"\n✅ Best model : BERT")
+print(f"\n Best model : SBERT" if overall_sbert > overall_bert
+      else f"\n Best model : BERT")
 
 
 # ============================================================
@@ -202,7 +202,7 @@ all_tfidf_df = pd.concat([
 all_tfidf_df.to_csv("results/tfidf_rankings.csv",    index=False)
 tfidf_acc_df.to_csv("results/tfidf_jd_accuracy.csv", index=False)
 
-print("\n✅ Results saved:")
+print("\n Results saved:")
 print("   → results/tfidf_rankings.csv")
 print("   → results/tfidf_jd_accuracy.csv")
 
@@ -217,4 +217,4 @@ sp.save_npz("embeddings/tfidf_jd_matrix.npz",     jd_tfidf)
 
 print("   → embeddings/tfidf_resume_matrix.npz")
 print("   → embeddings/tfidf_jd_matrix.npz")
-print("\n🎉 Step 6 Complete — Ready for Step 7: Classifier!")
+print("\n Step 6 Complete — Ready for Step 7: Classifier!")
